@@ -1,5 +1,5 @@
 name: siddhartha_cli
-description: A sample command-line application with basic argument parsing.
+description: Dart command line for creating new flutter project and feature with clean architecture.
 version: 0.0.1
 repository: https://github.com/dev-siddhartha/siddhartha_cli
 
