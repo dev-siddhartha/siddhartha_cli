@@ -46,7 +46,7 @@ class Feature {
 
     for (final entry in structure.entries) {
       final folderName = entry.key;
-      final files = entry.value;
+      final sub = entry.value;
 
       final folderPath = AppUtils.stringJoin(baseName, folderName);
       final folderDir = Directory(folderPath);
@@ -55,31 +55,62 @@ class Feature {
         folderDir.createSync(recursive: true);
       }
 
-      for (final fileName in files) {
-        final filePath = AppUtils.stringJoin(folderPath, fileName);
-        final file = File(filePath);
+      for (final subFolderName in sub) {
+        final subFolderPath = AppUtils.stringJoin(folderPath, subFolderName);
+        final subFolderDir = Directory(subFolderPath);
 
-        if (!await file.exists()) {
-          file.createSync(recursive: true);
+        if (!await subFolderDir.exists()) {
+          subFolderDir.createSync(recursive: true);
         }
       }
     }
   }
 
   Future<void> _createFile(String baseFolder, String featureName) async {
-    final filePath = AppUtils.stringJoin(baseFolder, '$featureName.dart');
+    final baseClassName = AppUtils.upperCamelCase(featureName);
+    final repoDir = AppUtils.stringJoin(baseFolder, 'domain', 'repo');
+    final implDir = AppUtils.stringJoin(baseFolder, 'data', 'repo_impl');
 
-    final file = File(filePath);
+    final repoFilePath = AppUtils.stringJoin(
+      repoDir,
+      '${featureName}_repo.dart',
+    );
+    final implFilePath = AppUtils.stringJoin(
+      implDir,
+      '${featureName}_repo_impl.dart',
+    );
 
-    if (!await file.exists()) {
-      file.createSync(recursive: true);
+    final repoFile = File(repoFilePath);
+    if (!await repoFile.exists()) {
+      const repoClassContent = '''
+abstract class %sRepo {
+  // Define contract methods here
+}
+''';
+      await repoFile.writeAsString(
+        repoClassContent.replaceFirst('%s', baseClassName),
+      );
+      print('Created: $repoFilePath');
+    } else {
+      print('Skipped (already exists): $repoFilePath');
     }
 
-    final content =
-        '''
-class ${AppUtils.upperCamelCase(featureName)} {}
-''';
+    final implFile = File(implFilePath);
+    if (!await implFile.exists()) {
+      final implClassContent =
+          '''
+import '../../domain/repo/${featureName}_repo.dart';
 
-    file.writeAsString(content);
+class ${AppUtils.upperCamelCase(featureName)}RepoImpl extends ${AppUtils.upperCamelCase(featureName)}Repo {
+  // Implement methods here
+}
+''';
+      await implFile.writeAsString(implClassContent);
+      print('Created: $implFilePath');
+    } else {
+      print('Skipped (already exists): $implFilePath');
+    }
+
+    print("Feature '$featureName' structure is ready inside lib/features.");
   }
 }
