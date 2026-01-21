@@ -15,7 +15,7 @@ class Create {
     final folderName = await AppUtils.readLine("project");
 
     if (folderName.trim().isEmpty) {
-      print("Folder name is required");
+      stdout.writeln("Folder name is required");
       return;
     }
 
@@ -28,7 +28,7 @@ class Create {
     if (command.exitCode == 0) {
       _removeGitFolder(folderName);
     } else {
-      print(command.stderr);
+      stdout.writeln(command.stderr);
     }
   }
 }

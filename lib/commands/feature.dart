@@ -14,7 +14,7 @@ class Feature {
     final folderName = await AppUtils.readLine("feature");
 
     if (folderName.trim().isEmpty) {
-      print("Folder name is required");
+      stdout.writeln("Folder name is required");
       return;
     }
 
@@ -90,9 +90,9 @@ abstract class %sRepo {
       await repoFile.writeAsString(
         repoClassContent.replaceFirst('%s', baseClassName),
       );
-      print('Created: $repoFilePath');
+      stdout.writeln('Created: $repoFilePath');
     } else {
-      print('Skipped (already exists): $repoFilePath');
+      stdout.writeln('Skipped (already exists): $repoFilePath');
     }
 
     final implFile = File(implFilePath);
@@ -106,11 +106,13 @@ class ${AppUtils.upperCamelCase(featureName)}RepoImpl extends ${AppUtils.upperCa
 }
 ''';
       await implFile.writeAsString(implClassContent);
-      print('Created: $implFilePath');
+      stdout.writeln('Created: $implFilePath');
     } else {
-      print('Skipped (already exists): $implFilePath');
+      stdout.writeln('Skipped (already exists): $implFilePath');
     }
 
-    print("Feature '$featureName' structure is ready inside lib/features.");
+    stdout.writeln(
+      "Feature '$featureName' structure is ready inside lib/features.",
+    );
   }
 }

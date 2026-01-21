@@ -1,5 +1,5 @@
 name: siddhartha_cli
-description: Dart command line for creating new flutter project and feature with clean architecture.
+description: Dart command line for creating new flutter project and feature architecture with clean architecture.
 version: 0.0.3
 repository: https://github.com/dev-siddhartha/siddhartha_cli
 
