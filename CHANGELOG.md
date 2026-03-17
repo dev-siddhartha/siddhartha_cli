@@ -1,5 +1,9 @@
 ## 0.0.3
 
+- Ask for project and package name and replace those with cloned package
+
+## 0.0.3
+
 - Create folder structure with repo and repo_impl file
 
 ## 0.0.2
