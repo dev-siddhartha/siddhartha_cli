@@ -22,7 +22,6 @@ class Create {
   }
 
   static Future<void> cloneProject() async {
-    // Step 1: Ask project name
     final projectName = await AppUtils.readLine(
       "project name (snake_case e.g. my_app)",
     );
@@ -31,7 +30,6 @@ class Create {
       return;
     }
 
-    // Step 2: Ask package name
     stdout.write("Enter package name (e.g. com.company.myapp): ");
     final packageName = stdin.readLineSync()?.trim() ?? '';
     if (packageName.trim().isEmpty) {
@@ -39,8 +37,7 @@ class Create {
       return;
     }
 
-    // Step 3: Clone
-    stdout.writeln("⏳ Cloning template...");
+    stdout.writeln(" ====== Cloning project ====== ");
     final command = await Process.run("git", [
       "clone",
       "https://github.com/dev-siddhartha/Flutter-templete-project.git",
@@ -52,15 +49,15 @@ class Create {
       return;
     }
 
-    // Step 4: Remove .git
     _removeGitFolder(projectName);
 
-    // Step 5: Replace all occurrences inside file contents
-    stdout.writeln("⚙️  Configuring project...");
+    stdout.writeln(" ====== Configuring project ====== ");
     await _replaceInAllFiles(projectName, projectName, packageName);
 
-    stdout.writeln("✅ Project '$projectName' created successfully!");
-    stdout.writeln("👉 Run: cd $projectName && flutter pub get");
+    stdout.writeln(
+      " ====== Project '$projectName' created successfully! ====== ",
+    );
+    stdout.writeln(" ====== Run: cd $projectName && flutter pub get ====== ");
   }
 
   static Future<void> _replaceInAllFiles(
@@ -84,9 +81,7 @@ class Create {
           if (content != updated) {
             await entity.writeAsString(updated);
           }
-        } catch (_) {
-          // Skip binary files (images, fonts, compiled files etc.)
-        }
+        } catch (_) {}
       }
     }
   }
