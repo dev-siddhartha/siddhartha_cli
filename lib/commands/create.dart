@@ -7,6 +7,11 @@ class Create {
   static const String _templateDisplayNameDev = 'Flutter Dev';
   static const String _templateDisplayNameProd = 'Flutter Prod';
 
+  static const String _repoUrl =
+      'https://github.com/dev-siddhartha/Flutter-templete-project.git';
+  static const String _branchMain = 'main';
+  static const String _branchMvvm = 'mvvm-arch';
+
   static void _removeGitFolder(String projectPath) {
     final gitFolder = Directory('$projectPath/.git');
     if (gitFolder.existsSync()) {
@@ -37,10 +42,27 @@ class Create {
       return;
     }
 
-    stdout.writeln(" ====== Cloning project ====== ");
+    stdout.writeln("Choose template branch:");
+    stdout.writeln("  1) $_branchMain (default)");
+    stdout.writeln("  2) $_branchMvvm");
+    stdout.write("Enter choice (1 or 2) [1]: ");
+    final branchChoice = stdin.readLineSync()?.trim() ?? '';
+    final String branch;
+    if (branchChoice == '2') {
+      branch = _branchMvvm;
+    } else {
+      if (branchChoice.isNotEmpty && branchChoice != '1') {
+        stdout.writeln("Invalid choice; using $_branchMain.");
+      }
+      branch = _branchMain;
+    }
+
+    stdout.writeln(" ====== Cloning project (branch: $branch) ====== ");
     final command = await Process.run("git", [
       "clone",
-      "https://github.com/dev-siddhartha/Flutter-templete-project.git",
+      "--branch",
+      branch,
+      _repoUrl,
       projectName,
     ]);
 

@@ -23,13 +23,18 @@ class AppUtils {
     return parts.join(Platform.pathSeparator);
   }
 
+  /// PascalCase from snake_case or kebab-case (e.g. `new_feature` → `NewFeature`).
   static String upperCamelCase(String name) {
-    final list = name.split("");
+    final trimmed = name.trim();
+    if (trimmed.isEmpty) return trimmed;
 
-    final firstLetter = list[0];
-
-    final upperFirstLetter = firstLetter.toUpperCase();
-
-    return '$upperFirstLetter${list.sublist(1).join("")}';
+    return trimmed
+        .split(RegExp(r'[_\s-]+'))
+        .where((segment) => segment.isNotEmpty)
+        .map((segment) {
+          final lower = segment.toLowerCase();
+          return '${lower[0].toUpperCase()}${lower.substring(1)}';
+        })
+        .join('');
   }
 }
