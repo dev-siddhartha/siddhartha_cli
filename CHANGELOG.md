@@ -1,3 +1,11 @@
+## 0.0.5
+
+- New Added
+    - Feature: Add option for mvvm architecture
+
+- Bug Fix:
+    - Fix issue of repo/repoimpl not following PascalCase
+
 ## 0.0.4
 
 - Ask for project and package name and replace those with cloned package
